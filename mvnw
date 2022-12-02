@@ -36,10 +36,6 @@
 
 if [ -z "$MAVEN_SKIP_RC" ] ; then
 
-  if [ -f /usr/local/etc/mavenrc ] ; then
-    . /usr/local/etc/mavenrc
-  fi
-
   if [ -f /etc/mavenrc ] ; then
     . /etc/mavenrc
   fi
