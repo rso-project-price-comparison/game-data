@@ -1,6 +1,8 @@
 package si.fri.rso.resources;
 
 import si.fri.rso.services.dtos.GameDto;
+import si.fri.rso.services.dtos.GamePriceDto;
+import si.fri.rso.services.dtos.PriceRequest;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -12,16 +14,10 @@ import java.util.List;
 public interface GameDataResource {
 
     @GET
-    @Path("/games")
+    @Path("/game")
     List<GameDto> getGames(@QueryParam("searchString") String searchString);
 
-
-    // TODO
-    //@GET
-    //@Path("/game")
-    //getPrices(@QueryParam("searchString") String searchString);
-
-    //@GET
-    //@Path("/price")
-    //List<GamePriceDto> getGamePrices(@QueryParam("ids") List<String> ids);
+    @POST
+    @Path("/price")
+    List<GamePriceDto> getPrices(List<PriceRequest> request);
 }
