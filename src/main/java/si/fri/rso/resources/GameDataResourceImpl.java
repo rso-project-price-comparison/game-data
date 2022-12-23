@@ -1,9 +1,8 @@
 package si.fri.rso.resources;
 
+import com.google.common.collect.Streams;
 import si.fri.rso.services.domain.ParserFetch;
-import si.fri.rso.services.dtos.GameBySearchDto;
-import si.fri.rso.services.dtos.GameDto;
-import si.fri.rso.services.dtos.StoreItem;
+import si.fri.rso.services.dtos.*;
 
 import javax.inject.Inject;
 import javax.ws.rs.BadRequestException;
@@ -46,14 +45,21 @@ public class GameDataResourceImpl implements GameDataResource {
         return new ArrayList<>(gamesMap.values());
     }
 
-    //@Override
-    //public List<GameBySearchDto> getGamesBySearchString(String searchString) {
-    //    if (searchString == null) {
-    //        throw new BadRequestException("Query parameter searchString is required");
-    //    }
+    @Override
+    public List<GamePriceDto> getPrices(List<PriceRequest> request) {
 
-    //    return SteamMapper.toGameBySearchDto(gameFetch.getGameBySearch(searchString));
-    //}
+        List<String> gog = getIdsFromStore(request, StoreEnum.GOG);
+
+        List<String> steam = getIdsFromStore(request, StoreEnum.STEAM);
 
 
+        return Streams.concat(parserFetch.getSteamPrices(steam).stream(), parserFetch.getGogPrices(gog).stream()).toList();
+    }
+
+    private static List<String> getIdsFromStore(List<PriceRequest> request, StoreEnum store) {
+        return request.stream().
+                filter(priceRequest -> Objects.equals(priceRequest.storeEnum(), store))
+                .map(PriceRequest::id)
+                .toList();
+    }
 }
