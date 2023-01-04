@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: game-data-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: game-data
+  template:
+    metadata:
+      labels:
+        app: game-data
+    spec:
+      containers:
+        - image: tjasad/rso-game-data:2022-12-23-11-51-47
+          name: game-data
+          resources:
+            limits:
+              memory: 512Mi
+          ports:
+            - containerPort: 8080
+              name: server
+              protocol: TCP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: game-data
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: server
+  selector:
+    app: game-data
