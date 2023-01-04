@@ -4,10 +4,12 @@ import com.google.common.collect.Streams;
 import si.fri.rso.services.domain.ParserFetch;
 import si.fri.rso.services.dtos.*;
 
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.BadRequestException;
 import java.util.*;
 
+@RequestScoped
 public class GameDataResourceImpl implements GameDataResource {
     @Inject
     ParserFetch parserFetch;
