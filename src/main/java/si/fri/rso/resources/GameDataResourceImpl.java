@@ -1,6 +1,10 @@
 package si.fri.rso.resources;
 
 import com.google.common.collect.Streams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 import si.fri.rso.services.domain.ParserFetch;
 import si.fri.rso.services.dtos.*;
 
@@ -13,9 +17,16 @@ import java.util.*;
 public class GameDataResourceImpl implements GameDataResource {
     @Inject
     ParserFetch parserFetch;
+    private static final Marker ENTRY_MARKER = MarkerFactory.getMarker("ENTRY");
+    private static final Marker OUT_MARKER = MarkerFactory.getMarker("OUT");
+
+    Logger log = LoggerFactory.getLogger(GameDataResourceImpl.class);
 
     @Override
     public List<GameDto> getGames(String searchString) {
+
+        log.info(ENTRY_MARKER, "Calling game data service: get games by search...");
+
         if (searchString == null) {
             throw new BadRequestException("Query parameter searchString is required");
         }
@@ -42,7 +53,13 @@ public class GameDataResourceImpl implements GameDataResource {
             }
         });
 
+        ArrayList<GameDto> result = new ArrayList<>(gamesMap.values());
 
+        if(result.isEmpty()) {
+            log.info(OUT_MARKER, "Calling game data service: no games found.");
+        } else {
+            log.info(OUT_MARKER, "Calling game data service: games by search successfully fetched.");
+        }
 
         return new ArrayList<>(gamesMap.values());
     }
@@ -50,12 +67,21 @@ public class GameDataResourceImpl implements GameDataResource {
     @Override
     public List<GamePriceDto> getPrices(List<PriceRequest> request) {
 
+        log.info(ENTRY_MARKER, "Calling game data service: get prices...");
+
         List<String> gog = getIdsFromStore(request, StoreEnum.GOG);
 
         List<String> steam = getIdsFromStore(request, StoreEnum.STEAM);
 
+        List<GamePriceDto> result = Streams.concat(parserFetch.getSteamPrices(steam).stream(), parserFetch.getGogPrices(gog).stream()).toList();
 
-        return Streams.concat(parserFetch.getSteamPrices(steam).stream(), parserFetch.getGogPrices(gog).stream()).toList();
+        if(result.isEmpty()) {
+            log.info(OUT_MARKER, "Calling game data service: no prices found.");
+        } else {
+            log.info(OUT_MARKER, "Calling game data service: prices successfully fetched.");
+        }
+
+        return result;
     }
 
     private static List<String> getIdsFromStore(List<PriceRequest> request, StoreEnum store) {
@@ -64,4 +90,15 @@ public class GameDataResourceImpl implements GameDataResource {
                 .map(PriceRequest::id)
                 .toList();
     }
+
+
+    // TODO remove, just check if consul properties are working
+    //@ConfigProperty(name = "greeting.message", defaultValue="Hello from default")
+    //String message;
+    //@GET
+    //@Override
+    //public String hello() {
+    //    return message;
+    //}
+
 }
