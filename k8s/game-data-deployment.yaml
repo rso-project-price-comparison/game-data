@@ -13,11 +13,14 @@ spec:
         app: game-data
     spec:
       containers:
-        - image: tjasad/rso-game-data:2022-12-23-11-51-47
+        - image: tjasad/rso-game-data:latest
           name: game-data
           resources:
             limits:
               memory: 512Mi
+          env:
+            - name: QUARKUS_PROFILE
+              value: production
           ports:
             - containerPort: 8080
               name: server

@@ -15,6 +15,11 @@ docker build -f Dockerfile.jvm -t tjasad/rso-game-data .
 docker run -i --rm -p 8080:8080 tjasad/rso-game-data
 ```
 
+## Docker push
+```shell script
+docker push tjasad/rso-game-data
+```
+
 ## Dockerhub link
 
 https://hub.docker.com/repository/docker/tjasad/rso-game-data
