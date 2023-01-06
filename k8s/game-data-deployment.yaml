@@ -13,7 +13,7 @@ spec:
         app: game-data
     spec:
       containers:
-        - image: tjasad/rso-game-data:2023-01-06-12-13-39
+        - image: tjasad/rso-game-data:2023-01-06-17-18-40
           name: game-data
           resources:
             limits:
@@ -27,13 +27,13 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /q/health/live
+              path: /game-data/q/health/live
               port: server
             initialDelaySeconds: 20
             periodSeconds: 3
           readinessProbe:
             httpGet:
-              path: /q/health/ready
+              path: /game-data/q/health/ready
               port: server
             initialDelaySeconds: 20
             periodSeconds: 3
