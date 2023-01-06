@@ -44,7 +44,21 @@ public interface GameDataResource {
                     content = @Content)})
     List<GamePriceDto> getPrices(List<PriceRequest> request);
 
-    //@GET
-    //@Path("/test")
-    //public String hello();
+    @POST
+    @Path("liveness/enable")
+    @Operation(summary = "Change application alive state to true.")
+    @APIResponses(value = {
+            @APIResponse(responseCode = "204", description = "Alive state successfuly changed."),
+            @APIResponse(responseCode = "400", description = "Query parameter state is required", content = @Content)
+    })
+    void enableLivenessCheck();
+
+    @POST
+    @Path("liveness/disable")
+    @Operation(summary = "Change application alive state to false.")
+    @APIResponses(value = {
+            @APIResponse(responseCode = "204", description = "Alive state successfuly changed."),
+            @APIResponse(responseCode = "400", description = "Query parameter state is required", content = @Content)
+    })
+    void disableLivenessCheck();
 }
