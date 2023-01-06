@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
+import si.fri.rso.health.AliveSingleton;
 import si.fri.rso.services.domain.ParserFetch;
 import si.fri.rso.services.dtos.*;
 
@@ -17,6 +18,10 @@ import java.util.*;
 public class GameDataResourceImpl implements GameDataResource {
     @Inject
     ParserFetch parserFetch;
+
+    @Inject
+    AliveSingleton singleton;
+
     private static final Marker ENTRY_MARKER = MarkerFactory.getMarker("ENTRY");
     private static final Marker OUT_MARKER = MarkerFactory.getMarker("OUT");
 
@@ -91,6 +96,17 @@ public class GameDataResourceImpl implements GameDataResource {
                 .toList();
     }
 
+    public void enableLivenessCheck() {
+        log.info(ENTRY_MARKER, "Calling game data service: enable liveness check...");
+        singleton.setState(true);
+        log.info(OUT_MARKER, "Calling game data service: liveness successfully enabled.");
+    }
+
+    public void disableLivenessCheck() {
+        log.info(ENTRY_MARKER, "Calling game data service: disable liveness check...");
+        singleton.setState(false);
+        log.info(OUT_MARKER, "Calling game data service: liveness successfully disabled.");
+    }
 
     // TODO remove, just check if consul properties are working
     //@ConfigProperty(name = "greeting.message", defaultValue="Hello from default")

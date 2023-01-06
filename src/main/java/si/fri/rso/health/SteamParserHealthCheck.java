@@ -9,15 +9,15 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.HttpMethod;
 
 @ApplicationScoped
-public class GogParserHealthCheck {
+public class SteamParserHealthCheck {
 
-    @ConfigProperty(name = "gog.url")
-    String gogUrl;
+    @ConfigProperty(name = "steam.url")
+    String steamUrl;
 
     @Readiness
     HealthCheck checkURL() {
-        return new UrlHealthCheck(gogUrl)
-                .name("Gog parser health check").requestMethod(HttpMethod.GET).statusCode(200);
+        return new UrlHealthCheck(steamUrl)
+                .name("Steam parser health check").requestMethod(HttpMethod.GET).statusCode(200);
     }
 
 }
