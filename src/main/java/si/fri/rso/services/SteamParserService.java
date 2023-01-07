@@ -1,13 +1,13 @@
 package si.fri.rso.services;
 
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
-import si.fri.rso.services.dtos.GameBySearchDto;
-import si.fri.rso.services.dtos.GamePriceDto;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import java.util.List;
+import si.fri.rso.GameBySearchDto;
+import si.fri.rso.GamePriceDto;
 
 
 @Path("/")

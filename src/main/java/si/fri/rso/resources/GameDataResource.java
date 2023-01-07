@@ -7,14 +7,14 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
-import si.fri.rso.services.dtos.GameBySearchDto;
+import si.fri.rso.GameBySearchDto;
 import si.fri.rso.services.dtos.GameDto;
-import si.fri.rso.services.dtos.GamePriceDto;
-import si.fri.rso.services.dtos.PriceRequest;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
+import si.fri.rso.services.dtos.PriceDto;
+import si.fri.rso.services.dtos.PriceRequest;
 
 @Path("/api/v1/gamedata")
 @Produces(MediaType.APPLICATION_JSON)
@@ -39,10 +39,10 @@ public interface GameDataResource {
     @APIResponses(value = {
             @APIResponse(responseCode = "200", description = "Found games.",
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON,
-                            schema = @Schema(implementation = GamePriceDto.class, type = SchemaType.ARRAY))}),
+                            schema = @Schema(implementation = PriceDto.class, type = SchemaType.ARRAY))}),
             @APIResponse(responseCode = "400", description = "Query parameter ids is required",
                     content = @Content)})
-    List<GamePriceDto> getPrices(List<PriceRequest> request);
+    List<PriceDto> getPrices(List<PriceRequest> request);
 
     @POST
     @Path("liveness/enable")

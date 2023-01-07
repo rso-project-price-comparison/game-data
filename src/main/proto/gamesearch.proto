@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "si.fri.rso";
+option java_outer_classname = "GameSearchProto";
+
+package game.search;
+
+enum StoreEnum {
+  STEAM = 0;
+  GOG = 1;
+}
+
+
+service GameService {
+  rpc GetGamesBySearchString(GetGamesBySearchStringRequest) returns (GetGamesBySearchStringResponse);
+  rpc getGamePrices (GetGamePricesRequest) returns (GetGamePricesResponse);
+}
+
+message GamePriceDto {
+  string gameId = 1;
+  float finalPrice = 2;
+  string currency = 3;
+  StoreEnum storeEnum = 4;
+}
+
+message GameBySearchDto {
+  string name = 1;
+  string appid = 2;
+  StoreEnum store_enum = 3;
+}
+
+message GetGamesBySearchStringRequest {
+  string search_string = 1;
+}
+
+message GetGamesBySearchStringResponse {
+  repeated GameBySearchDto games = 1;
+}
+
+message GetGamePricesRequest {
+  repeated string ids = 1;
+}
+
+message GetGamePricesResponse {
+  repeated GamePriceDto gamePrices = 1;
+}
