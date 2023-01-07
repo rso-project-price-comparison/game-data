@@ -2,6 +2,7 @@ package si.fri.rso.services.domain;
 
 import io.quarkus.grpc.GrpcClient;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import si.fri.rso.*;
@@ -22,9 +23,13 @@ public class SteamParserFetch {
     }
 
     public List<GamePriceDto> getSteamPrices(List<String> ids) {
-        return steamParserService.getGamePrices(GetGamePricesRequest.newBuilder()
-                        .addAllIds(ids)
-                        .build()).await().atMost(Duration.ofSeconds(5))
-                .getGamePricesList();
+        if(ids.isEmpty()) {
+            return new ArrayList<>();
+        } else {
+            return steamParserService.getGamePrices(GetGamePricesRequest.newBuilder()
+                            .addAllIds(ids)
+                            .build()).await().atMost(Duration.ofSeconds(5))
+                    .getGamePricesList();
+        }
     }
 }
