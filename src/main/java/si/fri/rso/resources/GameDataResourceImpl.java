@@ -62,7 +62,7 @@ public class GameDataResourceImpl implements GameDataResource {
                 gamesMap.put(g.name(), new GameDto(g.name(), storeItemList));
             } else {
                 GameDto gameDto = gamesMap.get(g.name());
-                gameDto.storeItemList().add(new StoreItem(g.name(), StoreEnum.GOG));
+                gameDto.storeItemList().add(new StoreItem(g.appid(), StoreEnum.GOG));
             }
         });
 
