@@ -27,8 +27,10 @@ public class CircuitBreakerPriceFetchProxy {
 //    If the service responds as expected, the circuit breaker will transition to the closed state. If the service does not respond as expected,
 //    the circuit breaker will remain open and requests will continue to be blocked.
     @CircuitBreaker(requestVolumeThreshold = 4, failureRatio = 0.5, delay = 1000)
-    public List<PriceDto> getPriceDtos(List<String> gog, List<String> steam) {
-        maybeFail();
+    public List<PriceDto> getPriceDtos(List<String> gog, List<String> steam, boolean circuitBreakerTest) {
+
+        if(circuitBreakerTest)
+            maybeFail();
 
         List<GamePriceDto> steamPrices = steamParserFetch.getSteamPrices(steam);
         List<PriceDto> gogPrices = gogParserFetch.getGogPrices(gog);

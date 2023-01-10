@@ -42,7 +42,7 @@ public interface GameDataResource {
                             schema = @Schema(implementation = PriceDto.class, type = SchemaType.ARRAY))}),
             @APIResponse(responseCode = "400", description = "Query parameter ids is required",
                     content = @Content)})
-    List<PriceDto> getPrices(List<PriceRequest> request);
+    List<PriceDto> getPrices(List<PriceRequest> request, @DefaultValue("false") @QueryParam("circuitBreakerTest") boolean circuitBreakerTest);
 
     @POST
     @Path("liveness/enable")

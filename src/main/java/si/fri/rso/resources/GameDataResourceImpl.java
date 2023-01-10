@@ -79,7 +79,7 @@ public class GameDataResourceImpl implements GameDataResource {
     private AtomicLong counter = new AtomicLong(0);
 
     @Override
-    public List<PriceDto> getPrices(List<PriceRequest> request) {
+    public List<PriceDto> getPrices(List<PriceRequest> request, boolean circuitBreakerTest) {
 
         log.info(ENTRY_MARKER, "Calling game data service: get prices...");
 
@@ -90,7 +90,7 @@ public class GameDataResourceImpl implements GameDataResource {
         final Long invocationNumber = counter.getAndIncrement();
 
         try {
-            List<PriceDto> result = circuitBreakerPriceFetchProxy.getPriceDtos(gog, steam);
+            List<PriceDto> result = circuitBreakerPriceFetchProxy.getPriceDtos(gog, steam, circuitBreakerTest);
             log.warn(String.format("GameDataResourceImpl#getPrices() invocation #%d returning successfully", invocationNumber));
 
             if (result.isEmpty()) {
@@ -129,14 +129,5 @@ public class GameDataResourceImpl implements GameDataResource {
         singleton.setState(false);
         log.info(OUT_MARKER, "Calling game data service: liveness successfully disabled.");
     }
-
-    // TODO remove, just check if consul properties are working
-    //@ConfigProperty(name = "greeting.message", defaultValue="Hello from default")
-    //String message;
-    //@GET
-    //@Override
-    //public String hello() {
-    //    return message;
-    //}
 
 }
